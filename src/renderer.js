@@ -1,20 +1,21 @@
-const ReactDOM = require('react-dom')
-const React = require('react')
+import ReactDOM from 'react-dom'
+import React from 'react'
 
 class AppComponent extends React.Component {
 	
 	constructor(props) {
 		super(props)
-		this.from = "other side"
 	}
 
+	from = "other side"
+
 	render() {
-		return React.createElement('div', null, `Hello from the ${this.from}!`);
+		return <div>Hello from the {this.from}!</div>;
 	}
 }
 
 let element = document.getElementById('app')
 ReactDOM.render(
-	React.createElement(AppComponent), 
+	<AppComponent />, 
 	element
 );

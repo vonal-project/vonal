@@ -18,8 +18,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sucrase/webpack-loader": "^2.0.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "sucrase": "^3.10.0",
     "webpack": "^4.29.6"
   }
 }

@@ -6,5 +6,18 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'src'),
     filename: 'renderer.built.js'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: {
+          loader: '@sucrase/webpack-loader',
+          options: {
+            transforms: ['jsx']
+          }
+        }
+      }
+    ]
   }
 };
