@@ -4,7 +4,7 @@ This is a lightweight electron-react boilerplate without unnecessary libraries, 
 
 ## When to use
 
-If you like to use simple but powerful solutions, this is for you.
+If you'd like to use simple but powerful solutions, this is for you. If it's a new project may you don't want to use javascript.
 
 ## Scripts
 
