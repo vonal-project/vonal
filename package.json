@@ -6,7 +6,6 @@
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.10.1",
     "css-loader": "^3.2.0",
-    "electron": "^4.2.9",
     "electron-builder": "^20.44.4",
     "file-loader": "^4.2.0",
     "fs": "0.0.1-security",
@@ -34,6 +33,7 @@
   "license": "ISC",
   "dependencies": {
     "@sucrase/webpack-loader": "^2.0.0",
+    "electron": "^6.0.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "remove": "^0.1.5",

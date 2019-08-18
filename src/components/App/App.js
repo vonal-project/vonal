@@ -3,27 +3,53 @@ import React from 'react'
 import './App.scss'
 import windowResizer from '../../utils/WindowResizer'
 import Results from '../Results/Results'
+import electron from 'electron'
+
+import PluginCollector from '../../utils/PluginCollector'
+import PluginFactory from '../../utils/PluginFactory'
+import PluginRegistry from '../../utils/PluginRegistry'
+import Config from '../../config'
+
+const {ipcRenderer} = electron
 class AppComponent extends React.Component {
 
     state = {
-        results: []
+        results: [],
+        pluginRegistry: null
     }
 
-    _handleSearch = e => {
+    _handleSearch = async e => {
         this.setState({
-            results: this._getResults(e.target.value)
+            results: await this._getResults(e.target.value)
         })
     }
 
+    _registerPlugins = async () => {
 
-    _getResults = q => {
-        let results = q.split('').map(
+        let pluginCollector = new PluginCollector
+        let pluginFactory = new PluginFactory
+    
+        let plugins = 
+            (await pluginCollector.collect(Config.PLUGINS_DIR))
+            .map(p => pluginFactory.create(p))
+    
+        let pluginRegistry = new PluginRegistry(plugins)
+
+        this.setState({ pluginRegistry })
+    }
+
+    _query_plugins = async q => {
+        return await this.state.pluginRegistry.search(q)
+    }
+
+
+    _getResults = async q => {
+        let plugin_results = await this._query_plugins(q)
+
+        let results = plugin_results.map(
             (result, id) => ({
                 id: id,
-                content: (<div className='row'>
-                    <button>{result}</button>
-                    <button>asd</button>
-                </div>)
+                content: result
             })
         )
         return results
@@ -33,6 +59,7 @@ class AppComponent extends React.Component {
         windowResizer.resizeToContent()
     }
     componentDidMount() {
+        this._registerPlugins()
         windowResizer.resizeToContent()
     }
 
