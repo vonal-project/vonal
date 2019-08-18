@@ -1,21 +1,12 @@
 import ReactDOM from 'react-dom'
 import React from 'react'
+import AppComponent from './components/App/App'
 
-class AppComponent extends React.Component {
-	
-	constructor(props) {
-		super(props)
-	}
-
-	from = "other side"
-
-	render() {
-		return <div>Hello from the {this.from}!</div>;
-	}
-}
+//import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/js/all'
 
 let element = document.getElementById('app')
 ReactDOM.render(
-	<AppComponent />, 
-	element
+    <AppComponent />,
+    element
 );

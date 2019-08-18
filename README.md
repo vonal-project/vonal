@@ -1,21 +1,39 @@
-# Lightweight Electron React Boilerplate
+# Vonal
 
-This is a lightweight electron-react boilerplate without unnecessary libraries, if you want to see an overcomplicated solution please take a look at here: https://github.com/electron-react-boilerplate/electron-react-boilerplate
+Vonal is an electron based launcher app for linux like rofi, albert, hain, etc... 
 
-## When to use
+## Why? 
 
-If you'd like to use simple but powerful solutions, this is for you. If it's a new project may you don't want to use javascript.
+I really wanted to make a launcher that not requires low level languages to write plugins and allows to make plugins as easily as it possible.
+Here it is an example:
 
-## Scripts
+```jsx
+// ~/.config/vonal/plugins/example-vonal-plugin/index.js
+export default (query) => {
+
+    if (query.match(/keyword to trigger/)) {
+        return <div className="row">
+            triggered
+        </div>
+
+    return null
+
+}
+```
+
+## Installation
+
+```bash
+npm i 
+npm run start # for doing a test run
+npm run package-linux # to create a package for linux
+```
+
+## Contributing
+
+Feel free to open any issues.  
+Pull requests are welcoming.  
 
 ```bash
 npm run dev # for development
-npm run start # for build and run
-npm run package-linux # for create package for linux and you can easily add platforms
 ```
-
-## If you want ES6 import syntax for main process 
-However I don't think it's a good idea, because `__dirname` is different when it's bundled. But configuring it is hard so I created another branch for you: `variation/es6main`.
-
-## Contributing
-Feel free to open any issue.

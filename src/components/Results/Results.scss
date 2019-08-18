@@ -1,0 +1,25 @@
+.result {
+    padding-bottom: 0.1rem;
+    &.selected {
+        background: rgba(255,255,255,0.1);
+
+    }
+}
+
+
+button {
+    border: 0;
+    padding: 0.2rem 1rem;
+    font-size: 1rem;
+    box-shadow: none;
+    background: none;
+    color: #fff;
+    margin-left: 10px;
+    &.selected {
+        background: rgba(64, 64, 64, 0.65);
+    }
+}
+
+.row {
+    padding: 0.2rem;
+}

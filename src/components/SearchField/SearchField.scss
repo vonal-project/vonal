@@ -1,0 +1,23 @@
+.search-field {
+    width: 100%;
+    display: flex;
+    .mode {
+        font-size:1.5rem;
+        padding:0.5rem;
+        flex: 1;
+        font-weight: 900;
+    }
+    input {
+        flex:999;
+        font-size:1.5rem;
+        padding:0.5rem;
+        color:#fff;
+        background: none;
+        &, &:active, &:hover, &:focus{
+            border:none;
+            box-shadow: none;
+            outline: none;
+        }
+    }
+    
+}
