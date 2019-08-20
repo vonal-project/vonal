@@ -11,7 +11,7 @@ Here it is an example:
 // ~/.config/vonal/plugins/example-vonal-plugin/index.js
 export default (query) => {
 
-    if (query.match(/keyword to trigger/)) {
+    if (query.match(/keyword to trigger/))
         return <div className="row">
             triggered
         </div>
