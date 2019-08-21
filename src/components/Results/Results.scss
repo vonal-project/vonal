@@ -9,17 +9,19 @@
 
 button {
     border: 0;
-    padding: 0.2rem 1rem;
+    padding: 0.2rem 0.5rem;
     font-size: 1rem;
     box-shadow: none;
     background: none;
     color: #fff;
-    margin-left: 10px;
+    margin: 0 1px;
+    opacity: 0.8;
     &.selected {
-        background: rgba(64, 64, 64, 0.65);
+        opacity: 1;
     }
 }
 
 .row {
+    color: rgb(143, 143, 143);
     padding: 0.2rem;
 }

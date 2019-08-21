@@ -21,17 +21,11 @@ class WindowFactory {
             frame: false,
             resizable: false,
             hasShadow: false,
-            useContentSize: false,
             minHeight: 40,
-            height: 40
+            height: 40,
         })
-
-        window.setAutoHideMenuBar(true);
         window.setAlwaysOnTop(true, 'floating');
-        window.maximize();
-        window.setPosition(0, 0);
-        window.show();
-        window.setPosition(0, 0);
+        window.setPosition(0, -100);
 
 
         // Open the DevTools.
@@ -39,13 +33,18 @@ class WindowFactory {
 
         // and load the index.html of the app.
         window.loadFile(path.join(__dirname, 'renderer.html'))
+        window.hide()
 
         // Emitted when the window is closed.
         window.on('closed', function () {
-            // Dereference the window object, usually you would store windows
-            // in an array if your app supports multi windows, this is the time
-            // when you should delete the corresponding element.
-            window = null
+            window.on('close', (event) => {
+                if (app.quitting) {
+                    window = null
+                } else {
+                    event.preventDefault()
+                    window.hide()
+                }
+            })
         })
 
         return window

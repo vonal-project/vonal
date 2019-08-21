@@ -1,5 +1,7 @@
 import React from 'react'
 import './Results.scss'
+import ReactTestUtils from 'react-dom/test-utils';
+import { ipcRenderer } from 'electron';
 class Results extends React.Component {
 
     state = {
@@ -13,9 +15,30 @@ class Results extends React.Component {
     }
 
     componentDidMount() {
+        document.onkeypress = (e) => {
+            e = e || window.event;
+            let selected = document.querySelector('button.selected')
+            if(selected) {
+                if(e.keyCode == 13)
+                    ReactTestUtils.Simulate.click(selected);
+                ReactTestUtils.Simulate.keyPress(selected, {key: e.key, keyCode: e.keyCode, which: e.keyCode});
+            }
+        }
+
+        document.onkeyup = (e) => {
+            e = e || window.event;
+            let selected = document.querySelector('button.selected')
+            if(selected) {
+                ReactTestUtils.Simulate.keyUp(selected, {key: e.key, keyCode: e.keyCode, which: e.keyCode});
+            }
+        }
 
         document.onkeydown = (e) => {
             e = e || window.event;
+            let selected = document.querySelector('button.selected')
+            if(selected) {
+                ReactTestUtils.Simulate.keyDown(selected, {key: e.key, keyCode: e.keyCode, which: e.keyCode});
+            }
 
             let first = 0
             let last = Math.max(0, this.props.results.length - 1)
@@ -29,55 +52,59 @@ class Results extends React.Component {
             let prevButtonSelect
 
             let buttonsOfSelectedRow = document.querySelectorAll('.result.selected button')
-            if(buttonsOfSelectedRow) {
+            if (buttonsOfSelectedRow) {
                 firstButton = 0
                 lastButton = Math.max(0, buttonsOfSelectedRow.length - 1)
-                nextButtonSelect = Math.min(this.state.selectedButton + 1, firstButton)
-                prevButtonSelect = Math.max(this.state.selectedButton - 1, lastButton)
+                nextButtonSelect = Math.min(this.state.selectedButton + 1, lastButton)
+                prevButtonSelect = Math.max(this.state.selectedButton - 1, firstButton)
             }
 
 
             if (e.keyCode == '38') {
-                console.log(prevSelect)
                 // up
                 this.setState({
                     selected: prevSelect,
                 })
             }
             else if (e.keyCode == '40') {
-                console.log(nextSelect)
                 // down 
                 this.setState({
                     selected: nextSelect,
                 })
             }
             else if (e.keyCode == '37') {
-                // right
-                this.setState({
-                    selectedButton: nextButtonSelect
-                })
-            }
-            else if (e.keyCode == '39') {
                 // left
                 this.setState({
                     selectedButton: prevButtonSelect
                 })
             }
+            else if (e.keyCode == '39') {
+                // right
+                this.setState({
+                    selectedButton: nextButtonSelect
+                })
+            } else if (e.keyCode == '13') {
+                ipcRenderer.send('hide')
+            } else if (e.keyCode == '27') {
+                ipcRenderer.send('hide')
+            }
+
+
         }
     }
 
     componentDidUpdate() {
         // remove selection from buttonc1
-        let selected = document.querySelector('button.selected') 
-        if(selected) {
+        let selected = document.querySelector('button.selected')
+        if (selected) {
             selected.classList.remove('selected')
         }
 
         // add selection to button
         let selectedButtons = document.querySelectorAll('.result.selected button')
-        if(selectedButtons.length) {
-            if(selectedButtons.length) {
-                if(selectedButtons[this.state.selectedButton])
+        if (selectedButtons.length) {
+            if (selectedButtons.length) {
+                if (selectedButtons[this.state.selectedButton])
                     selectedButtons[this.state.selectedButton].classList.add('selected')
                 else
                     document.querySelectorAll('.result.selected button:last-child').classList.add('selected')

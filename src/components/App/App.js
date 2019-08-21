@@ -5,10 +5,12 @@ import windowResizer from '../../utils/WindowResizer'
 import Results from '../Results/Results'
 import electron from 'electron'
 
-import PluginCollector from '../../utils/PluginCollector'
-import PluginFactory from '../../utils/PluginFactory'
-import PluginRegistry from '../../utils/PluginRegistry'
+import PluginCollector from '../../utils/Plugin/PluginCollector'
+import PluginFactory from '../../utils/Plugin/PluginFactory'
+import PluginRegistry from '../../utils/Plugin/PluginRegistry'
 import Config from '../../config'
+import Logger from '../../utils/Logger/Logger'
+import LogEntry from '../../utils/Logger/LogEntry';
 
 const {ipcRenderer} = electron
 class AppComponent extends React.Component {
@@ -25,16 +27,29 @@ class AppComponent extends React.Component {
     }
 
     _registerPlugins = async () => {
-
-        let pluginCollector = new PluginCollector
+        let logger = new Logger
+        let pluginCollector = new PluginCollector(logger)
         let pluginFactory = new PluginFactory
-    
-        let plugins = 
-            (await pluginCollector.collect(Config.PLUGINS_DIR))
-            .map(p => pluginFactory.create(p))
-    
-        let pluginRegistry = new PluginRegistry(plugins)
+        let pluginRegistry
+        let plugins = []
 
+        try {
+
+            plugins = 
+                (await pluginCollector.collect(Config.PLUGINS_DIR))
+                .map(p => pluginFactory.create(p))
+
+        } catch(e) {
+
+            let error
+            if (e instanceof LogEntry) error = logger.getFormattedLog(e)
+            else error = new LogEntry('UNCOUGHT_ERROR', 'UNKNOWN', e.stack)
+
+            ipcRenderer.send('log', error)
+
+        }
+
+        pluginRegistry = new PluginRegistry(plugins)
         this.setState({ pluginRegistry })
     }
 

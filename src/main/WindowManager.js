@@ -16,23 +16,20 @@ class WindowManager {
      * @param {number} height in pixels
      */
     resize(width, height) {
-        
-        /* WORKAROUNG BEGIN */
-        this.window.setResizable(true);
-        
-        if (!this.window.isMaximized()) {
-            this.window.maximize();
-        } else {
-            this.window.unmaximize();
-            this.window.setMaximumSize(width, height);
-            this.window.setResizable(false);
-        }
-        /* WORKAROUNG END */
-    
+        this.window.setMinimumSize(width, height);
         this.window.setSize(
             width,
             height
         )
+    }
+
+    show() {
+        this.window.show()
+        this.window.setPosition(0, 0);
+    }
+
+    hide() {
+        this.window.hide()
     }
 
 }
