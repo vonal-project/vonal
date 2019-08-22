@@ -39,10 +39,10 @@ npm i # to install dependencies
 # you have to make a FIFO pipe that you can use to send commands to Vonal
 mkfifo VONALPIPE # It's a bit unique design, but this way you can use your choosen keyboard daemon
 
-npm start pipe ./VONALPIPE # to build & run the application with pipe LOCATION_OF_PIPE
+npm start -- -p ./VONALPIPE # to build & run the application with -p LOCATION_OF_PIPE
 
 # once you've built the application, 
-# you will able to use `electron . pipe LOCATION_OF_PIPE` to run. 
+# you will able to use `electron . -p LOCATION_OF_PIPE` to run. 
 # this way you don't need to pack the code (you could skip STEP 3)
 
 # now the application is running, you can start sending commands
@@ -55,7 +55,7 @@ echo 'quit' > ./VONALPIPE # to quit the launcher
 
 ```bash
 npm run package-linux # to create a package for linux
-# when you've got any type of executable you need to pass 'pipe' LOCATION_OF_PIPE
+# when you've got any type of executable you need to pass -p LOCATION_OF_PIPE
 # in the same way described in STEP 2.
 ```
 

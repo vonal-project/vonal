@@ -25,10 +25,12 @@ async function readInstrutions() {
     try {
         console.log(process.argv);
         
-        if ('pipe' in process.argv)
-            pipe_path = await fsp.realpath([...process.argv].shift())
+        if (process.argv[process.argv.length-2] == '-p')
+            pipe_path = await fsp.realpath(process.argv[process.argv.length-1])
         else
             throw 'no_pipe_found'
+        
+        console.log(pipe_path);
 
         const fifo = fs.createReadStream(pipe_path);
         fifo.on('data', async data => {
@@ -45,7 +47,10 @@ async function readInstrutions() {
             await readInstrutions()
         });
     } catch (e) {
-        console.error("pipe couldn't be found, try to make pipe with: mkfifo VONALPIPE, and run the app with vonal -p ./VONALPIPE")
+        console.error(`
+            pipe couldn't be found, try to make pipe with: 
+            mkfifo VONALPIPE, and run the app with vonal -p ./VONALPIPE 
+        `)
         app.quit()
     }
 }
