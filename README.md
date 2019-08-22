@@ -2,6 +2,8 @@
 
 Vonal is an electron based launcher app for linux like rofi, albert, hain, etc... 
 
+![Vonal](example.gif)
+
 ## Why? 
 
 I really wanted to make a launcher that not requires low level languages to write plugins and allows to make plugins as easily as it possible.
