@@ -24,7 +24,7 @@ export default (query) => {
 ## Installation & Usage
 
 ### Preparation 
-Make sure you, you've installed one of npm, or yarn
+Make sure, you've installed one of npm, or yarn
 
 ### 1. install dependencies
 Clone this repository, and go to the cloned project folder 
