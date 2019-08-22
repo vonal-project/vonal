@@ -23,7 +23,9 @@ async function readInstrutions() {
     let pipe_path
 
     try {
-        if ('-p' in process.argv)
+        console.log(process.argv);
+        
+        if ('pipe' in process.argv)
             pipe_path = await fsp.realpath([...process.argv].shift())
         else
             throw 'no_pipe_found'
