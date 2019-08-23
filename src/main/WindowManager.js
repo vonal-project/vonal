@@ -24,12 +24,16 @@ class WindowManager {
     }
 
     show() {
-        this.window.show()
-        this.window.setPosition(0, 0);
+        if(!this.window.isVisible()) {
+            this.window.show()
+            this.window.setPosition(0, 0);
+        }
     }
 
     hide() {
-        this.window.hide()
+        if(this.window.isVisible()) {
+            this.window.hide()
+        }
     }
 
 }
