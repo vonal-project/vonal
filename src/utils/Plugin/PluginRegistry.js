@@ -13,10 +13,26 @@ class PluginRegistry {
     /**
      * 
      * @param {string} query 
-     * @returns {React.Component}
+     * @returns {React.Component[]}
      */
-    search(query) {
-        return this.plugins.map(plugin => plugin.resultFunction(query))
+    async search(query) {
+        let results = await Promise.all(this.plugins.map(async plugin => await plugin.resultFunction(query)))
+        let merged_results = []
+
+        for( let result of results) {
+            if(result instanceof Array) {
+                merged_results = [
+                    ...merged_results,
+                    ...result
+                ]
+            } else {
+                merged_results = [
+                    ...merged_results,
+                    result
+                ]
+            }
+        }
+        return merged_results
     }
 }
 

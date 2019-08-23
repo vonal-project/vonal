@@ -83,9 +83,9 @@ class Results extends React.Component {
                 this.setState({
                     selectedButton: nextButtonSelect
                 })
-            } else if (e.keyCode == '13') {
+            } /*else if (e.keyCode == '13') {
                 ipcRenderer.send('hide')
-            } else if (e.keyCode == '27') {
+            }*/ else if (e.keyCode == '27') {
                 ipcRenderer.send('hide')
             }
 
