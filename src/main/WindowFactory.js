@@ -1,6 +1,6 @@
 import electron from 'electron'
 import path from 'path'
-const { BrowserWindow } = electron
+const { BrowserWindow, app } = electron
 
 
 class WindowFactory {
@@ -35,16 +35,13 @@ class WindowFactory {
         window.loadFile(path.join(__dirname, 'renderer.html'))
         window.hide()
 
-        // Emitted when the window is closed.
-        window.on('closed', function () {
-            window.on('close', (event) => {
-                if (app.quitting) {
-                    window = null
-                } else {
-                    event.preventDefault()
-                    window.hide()
-                }
-            })
+        window.on('close', (event) => {
+            if (app.quitting) {
+                window = null
+            } else {
+                event.preventDefault()
+                window.hide()
+            }
         })
 
         return window
