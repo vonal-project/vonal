@@ -23,19 +23,14 @@ async function readInstrutions() {
     let pipe_path
 
     try {
-        console.log(process.argv);
-        
         if (process.argv[process.argv.length-2] == '-p')
             pipe_path = await fsp.realpath(process.argv[process.argv.length-1])
         else
             throw 'no_pipe_found'
         
-        console.log(pipe_path);
-
         const fifo = fs.createReadStream(pipe_path);
         fifo.on('data', async data => {
             let cmd = data.toString('utf8').trim()
-            console.log(cmd);
 
             if (cmd === 'show')
                 state.windowManager.show()
@@ -77,17 +72,30 @@ app.on('before-quit', () => app.quitting = true)
  * the response event's name should be the 'event'+'-done'
  */
 
-ipcMain.on('resize-me-please', (event, height) => {
+ipcMain.on('resize', (event, height) => {
     let width = electron.screen.getPrimaryDisplay().workAreaSize.width
     state.windowManager.resize(width, height)
 })
 
-ipcMain.on('log', (event, error) => {
+ipcMain.on('log', (_event, error) => {
     if (error.errorCode === 'UNCOUGHT_ERROR')
         console.error(error)
     else
         console.log(error)
 })
-ipcMain.on('hide', (event, error) => {
+
+ipcMain.on('hide', () => {
     state.windowManager.hide()
+})
+
+ipcMain.on('show', () => {
+    state.windowManager.hide()
+})
+
+ipcMain.on('quit', () => {
+    app.quit()
+})
+
+ipcMain.on('restart', () => {
+    app.restart()
 })
