@@ -22,6 +22,10 @@ class AppComponent extends React.Component {
      * COMPONTENT LIFECYCLE EVENTS
      */
 
+    shouldComponentUpdate(nextState, nextProps) {
+        return nextProps.q != this.state.q
+    }
+
     componentDidUpdate() {
         this._resizeWindow()
     }
@@ -90,6 +94,8 @@ class AppComponent extends React.Component {
      * RENDER
      */
 
+    resultsID = 1
+
     render() {
         return <div id='app'>
             <SearchField
@@ -98,6 +104,7 @@ class AppComponent extends React.Component {
             />
             <Results
                 results={this.state.results}
+                key={++this.resultsID}
             />
         </div>
     }

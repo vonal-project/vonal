@@ -83,9 +83,9 @@ class Results extends React.Component {
                 this.setState({
                     selectedButton: nextButtonSelect
                 })
-            } /*else if (e.keyCode == '13') {
-                ipcRenderer.send('hide')
-            }*/ else if (e.keyCode == '27') {
+            } 
+            else if (e.keyCode == '27') {
+                // ESC
                 ipcRenderer.send('hide')
             }
 
@@ -94,7 +94,7 @@ class Results extends React.Component {
     }
 
     componentDidUpdate() {
-        // remove selection from buttonc1
+        // remove selection from button
         let selected = document.querySelector('button.selected')
         if (selected) {
             selected.classList.remove('selected')
