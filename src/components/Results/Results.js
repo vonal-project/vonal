@@ -15,29 +15,39 @@ class Results extends React.Component {
     }
 
     componentDidMount() {
+        this._registerEvents()
+        this._refreshButtonSelection()
+    }
+
+
+    componentDidUpdate() {
+        this._refreshButtonSelection()
+    }
+
+    _registerEvents = () => {
         document.onkeypress = (e) => {
             e = e || window.event;
             let selected = document.querySelector('button.selected')
-            if(selected) {
-                if(e.keyCode == 13)
+            if (selected) {
+                if (e.keyCode == 13)
                     ReactTestUtils.Simulate.click(selected);
-                ReactTestUtils.Simulate.keyPress(selected, {key: e.key, keyCode: e.keyCode, which: e.keyCode});
+                ReactTestUtils.Simulate.keyPress(selected, { key: e.key, keyCode: e.keyCode, which: e.keyCode });
             }
         }
 
         document.onkeyup = (e) => {
             e = e || window.event;
             let selected = document.querySelector('button.selected')
-            if(selected) {
-                ReactTestUtils.Simulate.keyUp(selected, {key: e.key, keyCode: e.keyCode, which: e.keyCode});
+            if (selected) {
+                ReactTestUtils.Simulate.keyUp(selected, { key: e.key, keyCode: e.keyCode, which: e.keyCode });
             }
         }
 
         document.onkeydown = (e) => {
             e = e || window.event;
             let selected = document.querySelector('button.selected')
-            if(selected) {
-                ReactTestUtils.Simulate.keyDown(selected, {key: e.key, keyCode: e.keyCode, which: e.keyCode});
+            if (selected) {
+                ReactTestUtils.Simulate.keyDown(selected, { key: e.key, keyCode: e.keyCode, which: e.keyCode });
             }
 
             let first = 0
@@ -83,7 +93,7 @@ class Results extends React.Component {
                 this.setState({
                     selectedButton: nextButtonSelect
                 })
-            } 
+            }
             else if (e.keyCode == '27') {
                 // ESC
                 ipcRenderer.send('hide')
@@ -93,7 +103,7 @@ class Results extends React.Component {
         }
     }
 
-    componentDidUpdate() {
+    _refreshButtonSelection = () => {
         // remove selection from button
         let selected = document.querySelector('button.selected')
         if (selected) {
