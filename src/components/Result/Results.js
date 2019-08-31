@@ -112,12 +112,12 @@ class Results extends React.Component {
 
         // add selection to button
         let selectedButtons = document.querySelectorAll('.result.selected button')
+        let lastButton = document.querySelector('.result.selected button:last-child')
         if (selectedButtons.length) {
-            if (selectedButtons.length) {
-                if (selectedButtons[this.state.selectedButton])
-                    selectedButtons[this.state.selectedButton].classList.add('selected')
-                else
-                    document.querySelectorAll('.result.selected button:last-child').classList.add('selected')
+            if (selectedButtons[this.state.selectedButton]) {
+                selectedButtons[this.state.selectedButton].classList.add('selected')
+            } else if (lastButton) {
+                lastButton.classList.add('selected')
             }
         }
     }

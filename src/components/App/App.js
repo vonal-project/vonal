@@ -1,8 +1,8 @@
 import SearchField from '../SearchField/SearchField'
 import React from 'react'
 import './App.scss'
-import Results from '../Results/Results'
-
+import Results from '../Result/Results'
+import ResultWrapper from '../Result/ResultWrapper'
 import PluginCollector from '../../utils/Plugin/PluginCollector'
 import PluginFactory from '../../utils/Plugin/PluginFactory'
 import Logger from '../../utils/Logger/Logger'
@@ -60,7 +60,7 @@ class AppComponent extends React.Component {
         let results = plugin_results.map(
             (result, id) => ({
                 id: id,
-                content: result
+                content: <ResultWrapper result={result} />
             })
         )
 
