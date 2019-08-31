@@ -43,9 +43,6 @@ mkfifo VONALPIPE # It's a bit unique design, but this way you can use your choos
 
 npm start -- -p ./VONALPIPE # to build & run the application with -p LOCATION_OF_PIPE
 
-# Does it fail? "electron" may fails to install due to lack of privileges
-# Do not run npm with sudo! 
-# Install electron via your package manager instead.
 
 # once you've built the application, 
 # you will able to use `electron . -p LOCATION_OF_PIPE` to run. 
