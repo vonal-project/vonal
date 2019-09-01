@@ -8,7 +8,7 @@ class PluginRegistry {
      */
     constructor(plugins) {
         this.plugins = plugins
-    }    
+    }
 
     /**
      * 
@@ -16,11 +16,11 @@ class PluginRegistry {
      * @returns {React.Component[]}
      */
     async search(query) {
-        let results = await Promise.all(this.plugins.map(async plugin => await plugin.resultFunction(query)))
+        let results = await Promise.all(this.plugins.map(async p => await this._getPluginResults(p, query)))
         let merged_results = []
 
-        for( let result of results) {
-            if(result instanceof Array) {
+        for (let result of results) {
+            if (result instanceof Array) {
                 merged_results = [
                     ...merged_results,
                     ...result
@@ -33,6 +33,25 @@ class PluginRegistry {
             }
         }
         return merged_results
+    }
+
+    /**
+     * 
+     * @param {Plugin} plugin 
+     * @param {string} query
+     * @returns {React.BaseComponent|Array<React.BaseComponent>|{isError:true, error: any}} 
+     */
+    async _getPluginResults(plugin, query) {
+        try {
+            return await plugin.resultFunction(query)
+        } catch (e) {
+            return {
+                isError: true,
+                error: e,
+                plugin: plugin
+            }
+        }
+
     }
 }
 
