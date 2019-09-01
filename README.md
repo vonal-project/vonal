@@ -43,6 +43,7 @@ mkfifo VONALPIPE # It's a bit unique design, but this way you can use your choos
 
 npm start -- -p ./VONALPIPE # to build & run the application with -p LOCATION_OF_PIPE
 
+
 # once you've built the application, 
 # you will able to use `electron . -p LOCATION_OF_PIPE` to run. 
 # this way you don't need to pack the code (you could skip STEP 3)
@@ -66,11 +67,8 @@ npm run package-linux # to create a package for linux
 By default, Vonal is just a textbox and it won't show any results.
 To install plugins make this folder: `~/.config/vonal/plugins`.
 
-Currently plugins are actively developed but here is an example:
-https://github.com/vonal-project/example-vonal-plugin
-Clone this plugin into `~/.config/vonal/plugins` and follow the installation steps described in the repository.
-
-
+Currently plugins are actively developed, but you can find them here:
+https://github.com/vonal-project
 
 ## Contributing
 
