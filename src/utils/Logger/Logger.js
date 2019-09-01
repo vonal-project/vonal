@@ -1,12 +1,20 @@
 import LogEntry from './LogEntry'
 
 class Logger {
+
+    /**
+     * 
+     * @param {Function} out 
+     */
+    constructor(out) {
+        this.out = out
+    }
     
     /**
      * 
      * @param {string} module 
      */
-    getExceptionLoggerFor(module) {
+    getLoggerFor(module) {
         return (log) => {
             
             // the first non-empty line will be error code
@@ -20,17 +28,23 @@ class Logger {
             let errorCode = lines.shift()
             let message = lines.join('\n')
 
-            return new LogEntry(
+            let logEntry = new LogEntry(
                 errorCode,
                 module,
                 message
             )
+
+            this.out(
+                this.getFormattedLog(logEntry)
+            )
+
+            return logEntry
         }
     }
 
     /**
      * 
-     * @param {object} logObject 
+     * @param {Object} logObject 
      * @param {string} logObject.errorCode 
      * @param {string} logObject.module
      * @param {string} logObject.message 

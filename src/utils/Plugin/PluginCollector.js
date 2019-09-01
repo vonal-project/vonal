@@ -1,5 +1,6 @@
 import { promises as fsp } from 'fs'
 import path from 'path'
+import LogEntry from '../Logger/LogEntry';
 
 class PluginCollector {
 
@@ -8,7 +9,7 @@ class PluginCollector {
      * @param {Logger} logger 
      */
     constructor(logger) {
-        this.log = logger.getExceptionLoggerFor('PluginCollector')
+        this.log = logger.getLoggerFor('PluginCollector')
     }
 
 
@@ -18,7 +19,6 @@ class PluginCollector {
      * @returns {string} the path of the transformed file
      */
     async _getPackageIndex(from) {
-        // TODO: transfrom with sucrase
         let packagePath = path.join(from, 'package.json')
         let packageContent
         let packageObj
@@ -31,7 +31,7 @@ class PluginCollector {
                 For the ${from.split('/').pop()}, package.json can not be found.
                 Please provide 'package.json' with the content like this:
                 { main: 'THE_PLUGIN_ENTRY.js' }
-                details: ${ e.stack }
+                details: ${ e.stack}
             `)
         }
 
@@ -58,9 +58,10 @@ class PluginCollector {
 
         try {
             pluginDirectories = await fsp.readdir(from)
+            
         } catch (e) {
             throw this.log(`
-                PLUGINDIR_IS_UREADABLE
+                PLUGINDIR_IS_UNREADABLE
                 Couldn't read the '${from}' direcotry. 
                 Check the error: ${e.stack}
             `)
@@ -69,19 +70,34 @@ class PluginCollector {
 
         let loadedPlugins = []
         for (let pluginDirectory of pluginDirectories) {
-
-            // get index path
-            let pluginIndexFile = await this._getPackageIndex(
-                path.join(from,pluginDirectory)
-            )
-
-            // load
-            loadedPlugins.push({
-                name: pluginDirectory,
-                plugin: require(
-                    pluginIndexFile
+            let pluginIndexFile
+            
+            try {
+                // get index path
+                pluginIndexFile = await this._getPackageIndex(
+                    path.join(from, pluginDirectory)
                 )
-            })
+            } catch (e) {
+                if (!(e instanceof LogEntry)) throw e
+            }
+
+            try {
+                // load
+                loadedPlugins.push({
+                    name: pluginDirectory,
+                    plugin: require(
+                        pluginIndexFile
+                    )
+                })
+            } catch (e) {
+                this.log(`
+                    CORRUPTED_MAIN_FILE
+                    The main file specified in ${ pluginDirectory } is corrupted: "${ pluginIndexFile }".
+                    If you just downloaded the plugin please consider running build before using it. 
+                    Do you think it is a valid javascript file? 
+                    Does it have module.exports?
+                `)
+            }
         }
 
         return loadedPlugins

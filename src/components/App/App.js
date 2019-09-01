@@ -8,6 +8,8 @@ import PluginFactory from '../../utils/Plugin/PluginFactory'
 import Logger from '../../utils/Logger/Logger'
 import PluginRegister from '../../utils/Plugin/PluginRegister';
 import PluginEventHandler from '../../utils/Plugin/PluginEventHandler';
+import { ipcRenderer } from 'electron';
+import PluginValidator from '../../utils/Plugin/PluginValidator'
 
 global.pluginRegistry = null
 
@@ -68,9 +70,10 @@ class AppComponent extends React.Component {
     }
 
     _loadPlugins = async () => {
-        const logger = new Logger
+        const logger = new Logger(str => ipcRenderer.send('log', str))
         const pluginCollector = new PluginCollector(logger)
-        const pluginFactory = new PluginFactory
+        const pluginValidator = new PluginValidator()
+        const pluginFactory = new PluginFactory(pluginValidator, logger)
         const pluginRegister = new PluginRegister(logger, pluginCollector, pluginFactory)
         global.pluginRegistry = await pluginRegister.register()
     }
