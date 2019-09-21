@@ -36,6 +36,10 @@ class WindowManager {
         }
     }
 
+    send(...args) {
+        this.window.webContents.send(...args);
+    }
+
 }
 
 export default WindowManager

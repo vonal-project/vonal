@@ -96,6 +96,8 @@ class PluginCollector {
                     If you just downloaded the plugin please consider running build before using it. 
                     Do you think it is a valid javascript file? 
                     Does it have module.exports?
+                    details: ${e}
+                    stack: ${e}
                 `)
             }
         }

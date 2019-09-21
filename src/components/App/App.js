@@ -36,6 +36,9 @@ class AppComponent extends React.Component {
         this._registerPluginEvents()
         this._resizeWindow()
         this._loadPlugins()
+        ipcRenderer.on('reload_plugins', () => {
+            this._loadPlugins()
+        })
     }
 
     /*

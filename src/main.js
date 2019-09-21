@@ -23,11 +23,11 @@ async function readInstrutions() {
     let pipe_path
 
     try {
-        if (process.argv[process.argv.length-2] == '-p')
-            pipe_path = await fsp.realpath(process.argv[process.argv.length-1])
+        if (process.argv[process.argv.length - 2] == '-p')
+            pipe_path = await fsp.realpath(process.argv[process.argv.length - 1])
         else
             throw 'no_pipe_found'
-        
+
         const fifo = fs.createReadStream(pipe_path);
         fifo.on('data', async data => {
             let cmd = data.toString('utf8').trim()
@@ -38,6 +38,12 @@ async function readInstrutions() {
                 state.windowManager.hide()
             if (cmd === 'quit')
                 app.quit()
+            if (cmd === 'restart') {
+                app.relaunch({ args: process.argv.slice(1) })
+                app.exit(0)
+            }
+            if (cmd === 'reload_plugins')
+                state.windowManager.send('reload_plugins')
 
             await readInstrutions()
         });

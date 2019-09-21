@@ -1,3 +1,4 @@
+import { ipcRenderer } from "electron";
 
 class PluginEventHandler {
     listeners = {}
@@ -7,10 +8,13 @@ class PluginEventHandler {
      * @param {String} eventName 
      */
     send(eventName) {
-        for(let listener of this.listeners[eventName]) {
-            // eventName won't be passed as argument
-            listener(...Array.from(arguments).slice(1)) 
-        }
+        if (this.listeners[eventName])
+            for (let listener of this.listeners[eventName]) {
+                // eventName won't be passed as argument
+                listener(...Array.from(arguments).slice(1))
+            }
+        else
+            ipcRenderer.send(eventName,...Array.from(arguments).slice(1))
     }
 
     /**
@@ -18,7 +22,7 @@ class PluginEventHandler {
      * @param {String} eventName 
      */
     on(eventName, callback) {
-        if(this.listeners[eventName])
+        if (this.listeners[eventName])
             this.listeners[eventName].push(callback)
         else
             this.listeners[eventName] = [callback]
