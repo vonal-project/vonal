@@ -1,4 +1,4 @@
-# PLUGINS
+# Dive into plugins
 
 ## How it works? (SIMPLE STUPID)
 
@@ -62,15 +62,15 @@ For an example, see this repository: https://github.com/vonal-project/example-vo
 
 Plugins can emit and listen the following events:
 
-| EventName | Args | Description | 
-| --- | --- | --- |
-| query:clear || clears the textbox |
-| query:mutate | Function | mutates the content of the textbox |
-| window:hide || hides the GUI |
-| window:show || shows the GUI |
-| window:resize || On every query change, the window will be resized to the resulted content, but if your content changes you should send this event |
-| app:quit || quits Vonal |
-| app:restart || restarts Vonal |
+| EventName     | Args     | Description                                                                                                                       |
+| ------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| query:clear   |          | clears the textbox                                                                                                                |
+| query:mutate  | Function | mutates the content of the textbox                                                                                                |
+| window:hide   |          | hides the GUI                                                                                                                     |
+| window:show   |          | shows the GUI                                                                                                                     |
+| window:resize |          | On every query change, the window will be resized to the resulted content, but if your content changes you should send this event |
+| app:quit      |          | quits Vonal                                                                                                                       |
+| app:restart   |          | restarts Vonal                                                                                                                    |
 
 Event examples: 
 ```js

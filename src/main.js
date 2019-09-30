@@ -39,13 +39,17 @@ async function readInstrutions() {
             if (cmd === 'quit')
                 app.quit()
             if (cmd === 'restart') {
+                state.windowManager.close()
                 app.relaunch({ args: process.argv.slice(1) })
                 app.exit(0)
             }
-            if (cmd === 'reload_plugins')
+            if (cmd === 'reload_plugins') {
                 state.windowManager.send('reload_plugins')
+            }
 
-            await readInstrutions()
+
+            if (cmd !== 'restart')
+                readInstrutions()
         });
     } catch (e) {
         console.error(`
@@ -57,6 +61,8 @@ async function readInstrutions() {
 }
 
 app.on('ready', async function () {
+    console.log("Vonal has started!");
+
     createWindow()
     readInstrutions()
 })

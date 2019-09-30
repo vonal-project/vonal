@@ -1,5 +1,4 @@
-import electron from 'electron'
-
+import { BrowserWindow } from 'electron'
 class WindowManager {
 
     /**
@@ -7,7 +6,11 @@ class WindowManager {
      * @param {BrowserWindow} window to manage 
      */
     constructor(window) {
-       this.window = window
+        this.window = window
+    }
+
+    close() {
+        this.window.close();
     }
 
     /**
@@ -24,20 +27,23 @@ class WindowManager {
     }
 
     show() {
-        if(!this.window.isVisible()) {
+        if (!this.window.isVisible()) {
             this.window.show()
             this.window.setPosition(0, 0);
         }
     }
 
     hide() {
-        if(this.window.isVisible()) {
+        if (this.window.isVisible()) {
             this.window.hide()
         }
     }
 
-    send(...args) {
-        this.window.webContents.send(...args);
+    send() {
+
+        console.log(arguments);
+        this.window.webContents.send(...arguments);
+
     }
 
 }

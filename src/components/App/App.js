@@ -47,11 +47,11 @@ class AppComponent extends React.Component {
 
     _registerPluginEvents() {
         PluginEventHandler.on('query:clear', () => {
-            this.setState({q:''}) 
+            this.setState({ q: '' })
         })
 
         PluginEventHandler.on('query:mutate', (mutator) => {
-            this.setState({q:mutator(this.state.q)}) 
+            this.setState({ q: mutator(this.state.q) })
         })
     }
 
