@@ -1,11 +1,13 @@
+
 # Vonal
 
 Vonal is an electron based launcher app for linux like rofi, albert, hain, etc... 
 
+![Vonal](example.png)
+
+
 ## **Wait** ... Electron based? 
 Yes, but it is quite fast and you can modify it easly.
-
-![Vonal](example.gif)
 
 ## Why? 
 
@@ -85,5 +87,5 @@ npm run package-linux # to create a package for linux
 
 *Feel free to open any issues.*  
 *Great pull requests for merge will be choosed.*  
-*You can* [Dive into plugins](./docs/DIVE_INTO_PLUGINS).  
+*You can* [Dive into plugins](docs/DIVE_INTO_PLUGINS).  
 *The asker who wins.*
