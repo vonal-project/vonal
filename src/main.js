@@ -6,108 +6,122 @@ import path from 'path'
 
 const { app, ipcMain } = electron
 
-let state = {
-    windowManager: null
-}
+class Main {
+    constructor() {
 
-/**
- * Hanlde app events
- */
+        /**
+         * Handing app lifecycle
+         */
+        app.on('ready', () => this.onReady())
+        app.on('activate', () => this.windowManager.show())
+        app.on('before-quit', () => { app.quitting = true })
 
-function createWindow() {
-    let windowFactory = new WindowFactory
-    state.windowManager = new WindowManager(windowFactory.create())
-}
+        /**
+         * CONVENTION:
+         * the response event's name should be the 'event'+'-done'
+         */
+        ipcMain.on('resize', (_, height) => this.resizeToContent(height))
+        ipcMain.on('log', (_, error) => this.log(error))
+        ipcMain.on('hide', () => this.windowManager.hide())
+        ipcMain.on('show', () => this.windowManager.show())
+        ipcMain.on('quit', () => app.quit())
+        ipcMain.on('restart', () => app.restart())
 
-async function readInstrutions() {
-    let pipe_path
+        /**
+         * The window
+         */
+        this.windowManager = null
+    }
 
-    try {
+    onReady() {
+        console.log("VONAL: Vonal is starting --- --- ---");
+        this.windowManager = this.getNewWindowManager()
+        this.tryToReadInstructions()
+    }
+
+    getNewWindowManager() {
+        let windowFactory = new WindowFactory
+        let windowManager = new WindowManager(windowFactory.create())
+        return windowManager
+    }
+
+    resizeToContent(height) {
+        let width = electron.screen.getPrimaryDisplay().workAreaSize.width
+        this.windowManager.resize(width, height)
+    }
+
+    log(error) {
+        if (error.errorCode === 'UNCOUGHT_ERROR')
+            console.error(error)
+        else
+            console.log(error)
+    }
+
+    async tryToReadInstructions() {
+        try {
+            await this.readInstrutions()
+        } catch (e) {
+            if (e === 'no_pipe_found') console.error(`
+                    pipe couldn't be found, try to make pipe with: 
+                    mkfifo VONALPIPE, and run the app with vonal -p ./VONALPIPE 
+                `)
+            else console.error(`    
+                    UNCOUGHT_ERROR ${e} ${e.stack}
+                `)
+            app.quit()
+        }
+    }
+
+    /**
+     * @throws 'no_pipe_found'
+     */
+    async readInstrutions() {
+        let pipe_path, fifo, cmd
+
         if (process.argv[process.argv.length - 2] == '-p')
             pipe_path = await fsp.realpath(process.argv[process.argv.length - 1])
         else
             throw 'no_pipe_found'
 
-        const fifo = fs.createReadStream(pipe_path);
-        fifo.on('data', async data => {
-            let cmd = data.toString('utf8').trim()
+        while (cmd !== 'restart') {
+            fifo = fs.createReadStream(pipe_path);
+            cmd = await this.handleCommandData(fifo)
+        }
+    }
 
-            if (cmd === 'show')
-                state.windowManager.show()
-            if (cmd === 'hide')
-                state.windowManager.hide()
-            if (cmd === 'quit')
-                app.quit()
-            if (cmd === 'restart') {
-                state.windowManager.close()
-                app.relaunch({ args: process.argv.slice(1) })
-                app.exit(0)
-            }
-            if (cmd === 'reload_plugins') {
-                state.windowManager.send('reload_plugins')
-            }
+    handleCommandData(fifo) {
+        let cmd
 
+        return new Promise((done, reject) => {
+            fifo.on('data', async data => {
+                cmd = data.toString('utf8').trim()
 
-            if (cmd !== 'restart')
-                readInstrutions()
-        });
-    } catch (e) {
-        console.error(`
-            pipe couldn't be found, try to make pipe with: 
-            mkfifo VONALPIPE, and run the app with vonal -p ./VONALPIPE 
-        `)
-        app.quit()
+                switch (cmd) {
+                    case 'show':
+                        this.windowManager.show()
+                        break;
+                    case 'hide':
+                        this.windowManager.hide()
+                        break;
+                    case 'quit':
+                        app.quit()
+                        break;
+                    case 'restart':
+                        this.windowManager.close()
+                        app.relaunch({ args: process.argv.slice(1) })
+                        app.exit(0)
+                        break;
+                    case 'reload_plugins':
+                        this.windowManager.send('reload_plugins')
+                        break;
+                    default:
+                        console.error(`The command '${cmd}' is not found`);
+                }
+
+                done(cmd)
+            });
+        })
     }
 }
 
-app.on('ready', async function () {
-    console.log("Vonal has started!");
-
-    createWindow()
-    readInstrutions()
-})
-
-app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') {
-        app.quit()
-    }
-})
-
-app.on('activate', () => { windowManager.show() })
-
-app.on('before-quit', () => app.quitting = true)
-
-/**
- * handle events from renderer
- * 
- * CONVENTION:
- * the response event's name should be the 'event'+'-done'
- */
-
-ipcMain.on('resize', (event, height) => {
-    let width = electron.screen.getPrimaryDisplay().workAreaSize.width
-    state.windowManager.resize(width, height)
-})
-
-ipcMain.on('log', (_event, error) => {
-    if (error.errorCode === 'UNCOUGHT_ERROR')
-        console.error(error)
-    else
-        console.log(error)
-})
-
-ipcMain.on('hide', () => {
-    state.windowManager.hide()
-})
-
-ipcMain.on('show', () => {
-    state.windowManager.hide()
-})
-
-ipcMain.on('quit', () => {
-    app.quit()
-})
-
-ipcMain.on('restart', () => {
-    app.restart()
-})
+const main = new Main();
