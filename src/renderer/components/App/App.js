@@ -17,7 +17,10 @@ class AppComponent extends React.Component {
 
     state = {
         q: '',
-        results: [],
+        results: [{
+            id: -1,
+            content: <ResultWrapper result={<div></div>} /> // preloading ResultWrapper
+        }],
     }
 
     /*
