@@ -11,18 +11,18 @@ class WindowFactory {
     create() {
         // Create the browser window.
         let window = new BrowserWindow({
-            show: false,
+            show: true,
             width: electron.screen.getPrimaryDisplay().workAreaSize.width,
             webPreferences: {
                 nodeIntegration: true
             },
             titleBarStyle: 'hide',
-            transparent: true, // oc transparent
+            transparent: true,
             frame: false,
             resizable: false,
             hasShadow: false,
             minHeight: 40,
-            height: 40,
+            height: 40
         })
         window.setAlwaysOnTop(true, 'floating');
         window.setPosition(0, -100);
@@ -33,14 +33,14 @@ class WindowFactory {
 
         // and load the index.html of the app.
         window.loadFile(path.join(__dirname, 'renderer.html'))
-        window.hide()
+        //window.hide()
 
         window.on('close', (event) => {
             if (app.quitting) {
                 window = null
             } else {
                 event.preventDefault()
-                window.hide()
+                window.setPosition(0, -electron.screen.getPrimaryDisplay().workAreaSize.height);
             }
         })
 

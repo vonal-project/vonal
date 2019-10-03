@@ -1,12 +1,13 @@
-import { BrowserWindow } from 'electron'
+import electron from 'electron'
 class WindowManager {
 
     /**
      * 
-     * @param {BrowserWindow} window to manage 
+     * @param {electron.BrowserWindow} window to manage 
      */
     constructor(window) {
         this.window = window
+        this.lastSize = { width: 0, height: 0 };
     }
 
     close() {
@@ -24,19 +25,18 @@ class WindowManager {
             width,
             height
         )
+        this.lastSize = {
+            width,
+            height
+        }
     }
 
     show() {
-        if (!this.window.isVisible()) {
-            this.window.show()
-            this.window.setPosition(0, 0);
-        }
+        this.window.setPosition(0, 0);
     }
 
     hide() {
-        if (this.window.isVisible()) {
-            this.window.hide()
-        }
+        this.window.setPosition(0, -electron.screen.getPrimaryDisplay().workAreaSize.height)
     }
 
     send() {

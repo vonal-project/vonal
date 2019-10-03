@@ -1,37 +1,41 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Your app name</title>
-        <meta charset="utf-8">
-        <style>
-            * {
-                box-sizing: border-box;
-            }
 
-            html, body {
-                height: auto;
-                padding: 0;
-                margin: 0;
-                overflow: hidden;
-            }
+<head>
+    <title>Vonal</title>
+    <meta charset="utf-8">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-            #height-change-listener {
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                height: 100%;
-                width: 0;
-                border: 0;
-                background-color: transparent;
-            }
-        </style>
-	</head>
-	<body>
+        html,
+        body {
+            height: auto;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
 
-         <!-- iframe for detecting height changes -->
-         <iframe id="height-change-listener" tabindex="-1"></iframe>
-		<div id="app"></div>
-		<script src="./renderer.js"></script>
-	</body>
+        #height-change-listener {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            height: 100%;
+            width: 0;
+            border: 0;
+            background-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- iframe for detecting height changes -->
+    <iframe id="height-change-listener" tabindex="-1"></iframe>
+    <div id="app"></div>
+    <script src="./renderer.js"></script>
+</body>
+
 </html>

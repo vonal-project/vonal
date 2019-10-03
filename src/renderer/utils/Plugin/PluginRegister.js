@@ -1,5 +1,5 @@
 import PluginRegistry from "./PluginRegistry";
-import Config from '../../config'
+import Config from '../../../config'
 import LogEntry from "../Logger/LogEntry";
 
 class PluginRegister {
@@ -21,7 +21,7 @@ class PluginRegister {
 
         try {
             let raw_plugins = await this.pluginCollector.collect(Config.PLUGINS_DIR)
-            
+
             plugins = raw_plugins
                 .map(p => this._createPlugin(p))
                 .filter(p => p !== undefined)
@@ -46,7 +46,7 @@ class PluginRegister {
         try {
             return this.pluginFactory.create(p)
         } catch (e) {
-            return undefined 
+            return undefined
         }
     }
 }
