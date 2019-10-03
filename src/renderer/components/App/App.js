@@ -17,10 +17,7 @@ class AppComponent extends React.Component {
 
     state = {
         q: '',
-        results: [{
-            id: -1,
-            content: <ResultWrapper result={<div></div>} /> // preloading ResultWrapper
-        }],
+        results: [],
     }
 
     /*
@@ -39,6 +36,18 @@ class AppComponent extends React.Component {
         this._registerPluginEvents()
         this._resizeWindow()
         this._loadPlugins()
+            .then(async p => {
+                // precache plugins
+                // unfortunately react does not cache unrendered components so this helps to access plugins quickly
+                this.setState({
+                    results: await this._getResults("plugin-cache"),
+                    q: "plugin-cache"
+                })
+                this.setState({
+                    results: await this._getResults(""),
+                    q: ""
+                })
+            })
         ipcRenderer.on('reload_plugins', () => {
             this._loadPlugins()
         })
