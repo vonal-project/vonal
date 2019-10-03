@@ -88,4 +88,5 @@ npm run package-linux # to create a package for linux
 *Feel free to open any issues.*  
 *Great pull requests for merge will be choosed.*  
 *You can* [Dive into plugins](docs/DIVE_INTO_PLUGINS).  
-*The asker who wins.*
+*The asker who wins.*  
+ <sub> - sorry for this horrible poem</sub> 
