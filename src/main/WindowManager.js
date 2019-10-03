@@ -33,6 +33,9 @@ class WindowManager {
 
     show() {
         this.window.setPosition(0, 0);
+        this.window.setVisibleOnAllWorkspaces(true);
+        this.window.focus();
+        this.window.setVisibleOnAllWorkspaces(false)
     }
 
     hide() {
