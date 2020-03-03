@@ -7,7 +7,7 @@ Vonal is an electron based launcher app for linux like rofi, albert, hain, etc..
 
 
 ## **Wait** ... Electron based? 
-Yes, but it is quite fast and you can modify it easly.
+Yes, but it is quite fast and you can modify it easily.
 
 ## Why? 
 
