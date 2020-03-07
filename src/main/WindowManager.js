@@ -32,14 +32,13 @@ class WindowManager {
     }
 
     show() {
+        this.window.setPosition(1, 1); // workaround WM centering behaviour
+        this.window.show();
         this.window.setPosition(0, 0);
-        this.window.setVisibleOnAllWorkspaces(true);
-        this.window.focus();
-        this.window.setVisibleOnAllWorkspaces(false)
     }
 
     hide() {
-        this.window.setPosition(0, -electron.screen.getPrimaryDisplay().workAreaSize.height)
+        this.window.hide()
     }
 
     send() {

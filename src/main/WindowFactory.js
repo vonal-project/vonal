@@ -11,7 +11,7 @@ class WindowFactory {
     create() {
         // Create the browser window.
         let window = new BrowserWindow({
-            show: true,
+            show: false,
             width: electron.screen.getPrimaryDisplay().workAreaSize.width,
             webPreferences: {
                 nodeIntegration: true
@@ -39,8 +39,7 @@ class WindowFactory {
             if (app.quitting) {
                 window = null
             } else {
-                event.preventDefault()
-                window.setPosition(0, -electron.screen.getPrimaryDisplay().workAreaSize.height);
+                window.hide()
             }
         })
 
