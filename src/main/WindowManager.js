@@ -4,14 +4,16 @@ class WindowManager {
     /**
      * 
      * @param {electron.BrowserWindow} window to manage 
+     * @param {electron.Screen} screen to manage 
      */
-    constructor(window) {
+    constructor(window, screen) {
         this.window = window
-        this.lastSize = { width: 0, height: 0 };
+        this.screen = screen
+        this.lastSize = { width: 0, height: 0 }
     }
 
     close() {
-        this.window.close();
+        this.window.close()
     }
 
     /**
@@ -32,9 +34,10 @@ class WindowManager {
     }
 
     show() {
-        this.window.setPosition(1, 1); // workaround WM centering behaviour
-        this.window.show();
-        this.window.setPosition(0, 0);
+        let display = this.screen.getPrimaryDisplay()
+        this.window.setPosition(display.bounds.x + 1, display.bounds.y + 1) // workaround WM centering behaviour
+        this.window.show()
+        this.window.setPosition(display.bounds.x, display.bounds.y)
     }
 
     hide() {
@@ -44,7 +47,7 @@ class WindowManager {
     send() {
 
         console.log(arguments);
-        this.window.webContents.send(...arguments);
+        this.window.webContents.send(...arguments)
 
     }
 

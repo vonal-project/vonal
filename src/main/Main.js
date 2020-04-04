@@ -2,7 +2,7 @@ import WindowManager from './WindowManager'
 import WindowFactory from './WindowFactory'
 import electron from 'electron'
 import fs, { promises as fsp } from 'fs'
-const { app, ipcMain } = electron
+const { app, ipcMain, screen } = electron
 
 class Main {
     constructor() {
@@ -39,7 +39,7 @@ class Main {
 
     getNewWindowManager() {
         let windowFactory = new WindowFactory
-        let windowManager = new WindowManager(windowFactory.create())
+        let windowManager = new WindowManager(windowFactory.create(), screen)
         return windowManager
     }
 
