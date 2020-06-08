@@ -3,7 +3,7 @@ import WindowFactory from './WindowFactory'
 import electron from 'electron'
 import fs, { promises as fsp } from 'fs'
 const { app, ipcMain, screen } = electron
-
+app.allowRendererProcessReuse=false
 class Main {
     constructor() {
 
