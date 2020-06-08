@@ -1,0 +1,8 @@
+{
+        "appId": "com.vonal.vonal",
+        "files": [
+                "src/**/*",
+                "build/**/*",
+                "package.json"
+        ]
+}
